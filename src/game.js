@@ -5,7 +5,7 @@ export default class Game {
   constructor(gameWidth, gameHeight) {
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
-    this.blockSize = { width: gameWidth - gameWidth * 0.3, height: 100 };
+    this.blockSize = { width: gameWidth - gameWidth * 0.6, height: 30 };
     this.blockPosition = {
       x: 30,
       y: this.gameHeight - this.blockSize.height,

@@ -4,7 +4,10 @@ import Game from "./game.js";
 let canvas = document.getElementById("canvas");
 let ctx = canvas.getContext("2d");
 
-canvas.setAttribute("width", window.innerWidth);
+canvas.setAttribute(
+  "width",
+  window.innerWidth > 1000 ? 800 : window.innerWidth
+);
 canvas.setAttribute("height", window.innerHeight);
 
 const GAME_WIDTH = canvas.width;
