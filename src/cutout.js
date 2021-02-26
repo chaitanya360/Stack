@@ -1,14 +1,20 @@
+const TRIM_END = {
+  LEFT: 0,
+  RIGHT: 1,
+};
+
 export default class Cutout {
-  constructor(game, size, position) {
-    this.game = game;
+  constructor(block, size, position) {
+    this.game = block.game;
     this.size = size;
     this.position = position;
-    this.blockImage = document.getElementById("rect_pink");
+    this.blockImage = block.blockImage;
     this.speed = 3;
+    this.block = block;
   }
 
   draw(ctx) {
-    ctx.globalCompositeOperation = "destination-over";
+    // ctx.globalCompositeOperation = "destination-over";
 
     ctx.drawImage(
       this.blockImage,
@@ -24,7 +30,10 @@ export default class Cutout {
       return;
     }
 
-    console.log("updating");
     this.position.y += this.speed;
+    if (this.block.movingToRight) this.position.x += 0.5;
+    else {
+      this.position.x -= 0.5;
+    }
   }
 }

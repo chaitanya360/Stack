@@ -5,14 +5,30 @@ const TRIM_END = {
   RIGHT: 1,
 };
 
+const BLOCK_COLORS = [
+  "rect_black",
+  "rect_brown",
+  "rect_green",
+  "rect_orange",
+  "rect_purple",
+  "rect_skyBlue",
+  "rect_yellow",
+  "rect_blue",
+  "rect_pink",
+  "rect_red",
+];
+
 export default class BLock {
   constructor(game, size, position) {
     this.game = game;
     this.size = size;
     this.position = position;
-    this.blockImage = document.getElementById("rect_red");
-    this.speed = -10;
+    this.blockImage = document.getElementById(
+      BLOCK_COLORS[parseInt(Math.random() * 10) % BLOCK_COLORS.length]
+    );
+    this.speed = -4;
     this.hasCutout = false;
+    this.movingToRight = false;
     this.cutout;
     this.trimEnd = false;
     this.baseBlock = this.game.blocks.length === 0 ? true : false;
@@ -50,6 +66,7 @@ export default class BLock {
       this.position.x + this.size.width > this.game.gameWidth
     ) {
       this.speed = -this.speed;
+      this.movingToRight = !this.movingToRight;
     }
 
     //movemont
@@ -112,7 +129,7 @@ export default class BLock {
       }
 
       this.cutout = new Cutout(
-        this.game,
+        this,
         { width: diff, height: this.size.height },
         { x: x, y: this.position.y }
       );
