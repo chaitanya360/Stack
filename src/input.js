@@ -10,7 +10,7 @@ export default class InputHandler {
         // console.log(event.keyCode);
       }
     });
-    document.addEventListener("touchstart", (event) => {
+    document.addEventListener("touchend", (event) => {
       game.addBlock();
     });
 
