@@ -26,7 +26,7 @@ export default class BLock {
     this.blockImage = document.getElementById(
       BLOCK_COLORS[parseInt(Math.random() * 10) % BLOCK_COLORS.length]
     );
-    this.speed = -4;
+    this.speed = -20;
     this.hasCutout = false;
     this.movingToRight = false;
     this.cutout;

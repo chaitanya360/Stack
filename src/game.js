@@ -5,15 +5,15 @@ export default class Game {
   constructor(gameWidth, gameHeight) {
     this.gameWidth = gameWidth;
     this.gameHeight = gameHeight;
-    this.blockSize = { width: gameWidth - gameWidth * 0.3, height: 30 };
+    this.blockSize = { width: gameWidth - gameWidth * 0.3, height: 100 };
     this.blockPosition = {
       x: 30,
       y: this.gameHeight - this.blockSize.height,
     };
     this.blocks = [];
     this.gameScreenOffset = 0; //used to move screen down when it is overflowed
-    this.GAME_SCREEN_OFFSET = 3.1;
-    this.offset = 20; // space between stack and live block
+    this.GAME_SCREEN_OFFSET = 3;
+    this.offset = 50; // space between stack and live block
     this.addBlock(); // this is base
     this.addBlock(); // this is first live block
   }
@@ -35,29 +35,9 @@ export default class Game {
           })
       );
     }
-
-    if (
-      this.gameScreenOffset < this.GAME_SCREEN_OFFSET &&
-      this.blocks.length > 10
-    ) {
-      this.gameScreenOffset +=
-        this.GAME_SCREEN_OFFSET / (this.blockSize.height / 2);
-      console.log(this.gameScreenOffset);
-      if (this.blocks) {
-        // this.blocks.forEach((block) => block.update());
-        this.blocks.forEach(
-          (block) =>
-            (block.position = {
-              ...block.position,
-              y: block.position.y + this.gameScreenOffset,
-            })
-        );
-      }
-    }
   }
 
   addBlock() {
-    this.gameHeight += this.gameScreenOffset * 9;
     console.log("adding new block");
 
     let block = new Block(
@@ -81,6 +61,5 @@ export default class Game {
     }
 
     this.blocks.push(block);
-    this.gameScreenOffset = 0;
   }
 }
