@@ -9,8 +9,9 @@ export default class Cutout {
     this.size = size;
     this.position = position;
     this.blockImage = block.blockImage;
-    this.speed = 3;
+    this.speed = block.game.mobile ? 8 : 6;
     this.block = block;
+    this.horizontalSpeed = 0.3;
   }
 
   draw(ctx) {
@@ -29,11 +30,13 @@ export default class Cutout {
     if (this.position.y >= this.game.gameHeight) {
       return;
     }
+    if (this.block.shouldMoveDown) {
+      this.position.y += this.speed + 2;
+    } else this.position.y += this.speed;
 
-    this.position.y += this.speed;
-    if (this.block.movingToRight) this.position.x += 0.5;
+    if (this.block.movingToRight) this.position.x += this.horizontalSpeed;
     else {
-      this.position.x -= 0.5;
+      this.position.x -= this.horizontalSpeed;
     }
   }
 }

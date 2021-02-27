@@ -1,18 +1,23 @@
 import Cutout from "./cutout.js";
 
 const TRIM_END = {
-  LEFT: 0,
-  RIGHT: 1,
+  LEFT: 1,
+  RIGHT: 2,
+};
+
+const SPEED = {
+  THRESHOLD: 17,
+  MINIMUM: window.innerWidth < 1000 ? 15 : 10,
 };
 
 const BLOCK_COLORS = [
-  "rect_black",
+  // "rect_black",
   "rect_brown",
   "rect_green",
   "rect_orange",
-  "rect_purple",
+  // "rect_purple",
   "rect_skyBlue",
-  "rect_yellow",
+  // "rect_yellow",
   "rect_blue",
   "rect_pink",
   "rect_red",
@@ -23,12 +28,19 @@ export default class BLock {
     this.game = game;
     this.size = size;
     this.position = position;
+    this.shouldMoveDown = false;
+    this.moveDownCount = 0;
     this.blockImage = document.getElementById(
       BLOCK_COLORS[parseInt(Math.random() * 10) % BLOCK_COLORS.length]
     );
-    this.speed = -10;
+    this.speed = Math.min(
+      Math.max(SPEED.MINIMUM, this.game.blocks.length / 2),
+      SPEED.THRESHOLD
+    );
+    this.shouldDrop = false;
+    this.dropCount = 0;
     this.hasCutout = false;
-    this.movingToRight = false;
+    this.movingToRight = true;
     this.cutout;
     this.trimEnd = false;
     this.baseBlock = this.game.blocks.length === 0 ? true : false;
@@ -37,6 +49,8 @@ export default class BLock {
       this.position.y += this.game.offset;
     }
     this.ctx;
+
+    console.log("speed:", this.speed);
   }
 
   draw(ctx) {
@@ -54,6 +68,26 @@ export default class BLock {
   }
 
   update() {
+    if (this.shouldDrop) {
+      this.dropCount += 2;
+      this.position.y += 2;
+
+      if (this.dropCount == this.game.offset) {
+        this.shouldDrop = false;
+        this.dropCount = 0;
+      }
+    }
+
+    if (this.shouldMoveDown) {
+      this.moveDownCount += 3;
+      this.position.y += 3;
+
+      if (this.moveDownCount == this.size.height) {
+        this.shouldMoveDown = false;
+        this.moveDownCount = 0;
+      }
+    }
+
     //as it will be static
     if (this.baseBlock) {
       return;
@@ -86,7 +120,7 @@ export default class BLock {
     let prevBlockRightEnd = prevBlock.position.x + prevBlock.size.width;
 
     //drop down
-    this.position.y += this.game.offset;
+    this.shouldDrop = true;
 
     //stop moving
     this.speed = 0;
@@ -102,7 +136,6 @@ export default class BLock {
     //trim right
     if (currBlockRightEnd > prevBlockRightEnd) {
       diff = currBlockRightEnd - prevBlockRightEnd;
-      console.log(diff);
       this.trimEnd = TRIM_END.RIGHT;
     }
 
@@ -112,7 +145,7 @@ export default class BLock {
     if (newWidth > 0) {
       this.size.width = newWidth;
     } else {
-      alert("gameOver");
+      this.game.over();
     }
 
     //handling cutout
@@ -134,6 +167,29 @@ export default class BLock {
       );
     }
 
-    return newWidth > 0 ? newWidth : 0;
+    //perfect drop
+
+    if (!this.trimEnd) {
+      this.handlePerfectDrop();
+      this.game.score += 5;
+    } else {
+      this.game.score += 1;
+    }
+
+    return this.size.width;
+  }
+
+  moveDown() {
+    this.shouldMoveDown = true;
+  }
+
+  handlePerfectDrop() {
+    console.log("perfect drop");
+
+    let canvas = document.getElementById("canvas");
+    let temp = canvas.style.backgroundColor;
+
+    setTimeout(() => (canvas.style.backgroundColor = "white"), 50);
+    setTimeout(() => (canvas.style.backgroundColor = temp), 100);
   }
 }

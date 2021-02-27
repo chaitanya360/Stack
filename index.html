@@ -1,27 +1,36 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>Stack</title>
+    <title>Stack 1.0</title>
     <meta charset="UTF-8" />
 
     <style>
       body {
-        background-color: rgba(0, 0, 0, 0.411);
+        background-color: rgba(209, 22, 184, 0.11);
         height: 100vh;
-        width: 100vh;
+        width: 100vw;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        align-items: center;
+        padding: 0;
+        margin: 0;
       }
 
-      #canvas {
-        border: 2px solid black;
-        background-color: rgb(115, 155, 168);
-      }
       img {
         display: none;
+      }
+
+      #score_container {
+        font-size: x-large;
+        color: white;
+        font-family: Verdana, Geneva, Tahoma, sans-serif;
+        position: fixed;
       }
     </style>
   </head>
 
-  <body>
+  <body id="body">
     <img src="./assets/images/rect_yellow.png " id="rect_yellow" />
     <img src="./assets/images/rect_skyBlue.png " id="rect_skyBlue" />
     <img src="./assets/images/rect_purple.png " id="rect_purple" />
@@ -32,8 +41,9 @@
     <img src="./assets/images/rect_blue.png" id="rect_blue" />
     <img src="./assets/images/rect_pink.png" id="rect_pink" />
     <img src="./assets/images/rect_red.png" id="rect_red" />
-    <canvas id="canvas" width="400" height="600">something</canvas>
-
+    <canvas id="canvas" width="400" height="500"></canvas>
+    <div id="score_container">Score: <span id="score"></span></div>
+    <!-- <div id="menu">Press Enter To Start</div> -->
     <script src="src/index.js" type="module"></script>
   </body>
 </html>

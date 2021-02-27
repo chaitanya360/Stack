@@ -1,4 +1,3 @@
-import Game from "./game.js";
 export default class InputHandler {
   constructor(game) {
     document.addEventListener("keydown", (event) => {
@@ -6,15 +5,19 @@ export default class InputHandler {
         case 32:
           game.addBlock();
           break;
+
+        case 27:
+          game.pause();
+          game.restart();
+          break;
         default:
-        // console.log(event.keyCode);
+          console.log(event.keyCode);
       }
     });
-    document.ontouchend = () => game.addBlock();
 
-    document.addEventListener("keyup", (event) => {
-      switch (event.keyCode) {
-      }
+    document.addEventListener("touchend", (event) => {
+      navigator.vibrate(50);
+      game.addBlock();
     });
   }
 }
